@@ -33,7 +33,7 @@
       display: block;
     }
     .glass-bar {
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.95);
@@ -73,14 +73,14 @@
 <body class="relative w-screen h-screen overflow-hidden">
 
   <!-- Top Center Townscaper Swatch & Utility Bar -->
-  <header class="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 max-w-[96vw]">
-    <div class="glass-bar px-3 sm:px-4 py-2 sm:py-2.5 rounded-full flex items-center gap-2 sm:gap-3">
+  <header class="absolute top-3 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 max-w-[98vw]">
+    <div class="glass-bar px-3 sm:px-4 py-2 rounded-full flex items-center gap-1.5 sm:gap-2.5 flex-wrap justify-center">
       <!-- Color Swatches -->
-      <div id="palette" class="flex items-center gap-1.5 sm:gap-2">
+      <div id="palette" class="flex items-center gap-1 sm:gap-1.5">
         <!-- Injected via JavaScript -->
       </div>
 
-      <div class="h-6 w-[1.5px] bg-slate-300 mx-0.5 rounded-full"></div>
+      <div class="h-6 w-[1.5px] bg-slate-300 mx-0.5 rounded-full hidden sm:block"></div>
 
       <!-- Action Tools -->
       <div class="flex items-center gap-1 sm:gap-1.5">
@@ -97,7 +97,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
           </svg>
         </button>
-        <!-- Camera Mode (Perspective / Isometric) -->
+        <!-- Camera Mode -->
         <button id="btnIso" title="Toggle Isometric / Perspective View" class="btn-tool p-2 rounded-full text-emerald-600 bg-white/70 shadow-sm border border-emerald-200">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
@@ -115,6 +115,25 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 15l6-6m0 0l-6-6m6 6H9a6 6 0 000 12h3"></path>
           </svg>
         </button>
+        <!-- Save Town (LocalStorage) -->
+        <button id="btnSaveLocal" title="Save Town to Browser" class="btn-tool p-2 rounded-full text-blue-600 bg-white/70 shadow-sm border border-blue-200">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+          </svg>
+        </button>
+        <!-- Export JSON file -->
+        <button id="btnExport" title="Export Town (.json file)" class="btn-tool p-2 rounded-full text-teal-600 bg-white/70 shadow-sm border border-teal-200">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+          </svg>
+        </button>
+        <!-- Import JSON file -->
+        <label title="Import Town File" class="btn-tool p-2 rounded-full text-cyan-700 bg-white/70 shadow-sm border border-cyan-200 cursor-pointer inline-flex items-center justify-center">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+          </svg>
+          <input type="file" id="fileImport" accept=".json" class="hidden" />
+        </label>
         <!-- Clear Island -->
         <button id="btnClear" title="Clear Island" class="btn-tool p-2 rounded-full text-rose-600 bg-white/70 shadow-sm border border-rose-200">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -138,29 +157,29 @@
     </div>
   </header>
 
-  <!-- Clear Sea vs Land Indicator & Controls Guide -->
-  <footer class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none w-auto max-w-[95vw]">
-    <div class="glass-bar px-4 py-2.5 rounded-2xl text-xs sm:text-sm text-slate-700 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-center font-medium shadow-lg pointer-events-auto">
+  <!-- Clear Sea vs Land Indicator & Features Legend -->
+  <footer class="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none w-auto max-w-[96vw]">
+    <div class="glass-bar px-4 py-2 rounded-2xl text-[11px] sm:text-xs text-slate-700 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-center font-medium shadow-lg pointer-events-auto">
+      <span class="legend-badge text-amber-700">
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 border border-amber-600 shadow-sm inline-block"></span>
+        <b>Lighthouse:</b> Tall spires create a revolving light beacon
+      </span>
       <span class="legend-badge text-sky-800">
-        <span class="w-3 h-3 rounded-full bg-cyan-400 border border-cyan-600 shadow-sm inline-block"></span>
-        <b>Open Sea:</b> Click water to build Stone Quay Land
+        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 border border-cyan-600 shadow-sm inline-block"></span>
+        <b>Skywalk Bridges & Stairs:</b> Spans gaps and stepped heights
       </span>
-      <span class="legend-badge text-stone-800">
-        <span class="w-3 h-3 rounded-full bg-stone-400 border border-stone-600 shadow-sm inline-block"></span>
-        <b>Solid Land:</b> Paved Masonry Sea-wall + Wet Tide Band
+      <span class="legend-badge text-rose-700">
+        <span class="w-2.5 h-2.5 rounded-full bg-rose-400 border border-rose-600 shadow-sm inline-block"></span>
+        <b>Bunting & Windmills:</b> Flags swing across walls & sails turn on roofs
       </span>
-      <span class="legend-badge text-emerald-800">
-        <span class="w-3 h-3 rounded-full bg-emerald-500 border border-emerald-700 shadow-sm inline-block"></span>
-        <b>Courtyard:</b> Enclose land to spawn green grass gardens
-      </span>
-      <span class="text-slate-500 text-[11px] sm:text-xs">
-        <b>Click:</b> Build | <b>Right-Click:</b> Remove | <b>Drag:</b> Orbit
+      <span class="text-slate-500 text-[11px]">
+        <b>Click:</b> Build | <b>Right-Click:</b> Remove | <b>R:</b> Random | <b>T:</b> Sky
       </span>
     </div>
   </footer>
 
   <!-- Toast Notification -->
-  <div id="toast" class="opacity-0 translate-y-3 pointer-events-none fixed top-20 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-xl bg-slate-900/85 text-white text-xs font-semibold backdrop-blur-md shadow-md">
+  <div id="toast" class="opacity-0 translate-y-3 pointer-events-none fixed top-16 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-xl bg-slate-900/85 text-white text-xs font-semibold backdrop-blur-md shadow-md">
     Notification
   </div>
 
@@ -169,7 +188,7 @@
 
   <script>
     /* ==========================================================================
-       TOWNSCAPER COASTAL BUILDER - SEA VS LAND DISTINCTION & PROCEDURAL SYSTEM
+       TOWNSCAPER COASTAL BUILDER - EXTENDED ARCHITECTURE & SAVE/LOAD ENGINE
        ========================================================================== */
 
     // --- Web Audio Procedural Sound Engine ---
@@ -184,7 +203,7 @@
           this.ctx = new AudioCtx();
           this.startOcean();
         }
-        if (this.ctx.state === 'suspended') {
+        if (this.ctx && this.ctx.state === 'suspended') {
           this.ctx.resume();
         }
       },
@@ -246,7 +265,6 @@
         this.init();
         try {
           const t = this.ctx.currentTime;
-          // Resonant watery "plop-drop" into the sea
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sine';
@@ -268,7 +286,6 @@
         this.init();
         try {
           const t = this.ctx.currentTime;
-          // Crisp masonry stone click
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'triangle';
@@ -371,7 +388,7 @@
     const controls = new THREE.OrbitControls(activeCamera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.06;
-    controls.maxPolarAngle = Math.PI / 2 - 0.04; // Keep camera above sea level
+    controls.maxPolarAngle = Math.PI / 2 - 0.04;
     controls.minDistance = 6;
     controls.maxDistance = 85;
     controls.target.set(0, 1.2, 0);
@@ -439,7 +456,6 @@
     scene.add(sunLight);
 
     // --- Dynamic Multi-Layer Sea Ocean ---
-    // Deep Seabed Disk
     const seabedGeo = new THREE.CylinderGeometry(45, 48, 4, 48);
     const seabedMat = new THREE.MeshStandardMaterial({
       color: 0x0e3445,
@@ -450,7 +466,6 @@
     seabedMesh.receiveShadow = true;
     scene.add(seabedMesh);
 
-    // Animated Translucent Ocean Surface
     const waterGeometry = new THREE.PlaneGeometry(360, 360, 56, 56);
     const waterMaterial = new THREE.MeshStandardMaterial({
       color: 0x2e9ebb,
@@ -466,19 +481,6 @@
     oceanMesh.receiveShadow = true;
     scene.add(oceanMesh);
 
-    // Underwater Caustics Subtle Ring Plane
-    const underwaterGeo = new THREE.PlaneGeometry(80, 80);
-    const underwaterMat = new THREE.MeshBasicMaterial({
-      color: 0x1f6680,
-      transparent: true,
-      opacity: 0.4
-    });
-    const underwaterPlane = new THREE.Mesh(underwaterGeo, underwaterMat);
-    underwaterPlane.rotation.x = -Math.PI / 2;
-    underwaterPlane.position.y = -0.4;
-    scene.add(underwaterPlane);
-
-    // Invisible Raycast Plane for Sea Clicking
     const seaPlaneGeo = new THREE.PlaneGeometry(120, 120);
     const seaPlaneMat = new THREE.MeshBasicMaterial({ visible: false });
     const seaClickPlane = new THREE.Mesh(seaPlaneGeo, seaPlaneMat);
@@ -510,89 +512,125 @@
       });
     }
 
-    // --- Shared Architectural & Land Materials ---
+    // --- Dynamic Particle System for Smoke and Dust ---
+    const particles = [];
+    const particleGeo = new THREE.DodecahedronGeometry(0.12);
+
+    function spawnPuff(x, y, z, isWater = false) {
+      const count = isWater ? 9 : 6;
+      for (let i = 0; i < count; i++) {
+        const mat = new THREE.MeshBasicMaterial({
+          color: isWater ? 0xd8f5ff : 0xffffff,
+          transparent: true,
+          opacity: 0.8
+        });
+        const mesh = new THREE.Mesh(particleGeo, mat);
+        mesh.position.set(
+          x + (Math.random() - 0.5) * 0.4,
+          y + (Math.random() - 0.5) * 0.3,
+          z + (Math.random() - 0.5) * 0.4
+        );
+        mesh.scale.set(0.8, 0.8, 0.8);
+        scene.add(mesh);
+
+        particles.push({
+          mesh,
+          vx: (Math.random() - 0.5) * 0.035,
+          vy: Math.random() * 0.04 + 0.025,
+          vz: (Math.random() - 0.5) * 0.035,
+          life: 1.0,
+          decay: Math.random() * 0.03 + 0.02
+        });
+      }
+    }
+
+    // --- Coastal Props & Animated Seagulls ---
+    const coastalProps = [];
+    function createCoastalProps() {
+      // Small boat near island
+      const boatGroup = new THREE.Group();
+      const hullGeo = new THREE.BoxGeometry(0.7, 0.28, 1.4);
+      const hullMat = new THREE.MeshStandardMaterial({ color: 0x8b3a2b, roughness: 0.8 });
+      const hull = new THREE.Mesh(hullGeo, hullMat);
+      boatGroup.add(hull);
+
+      const seatGeo = new THREE.BoxGeometry(0.62, 0.06, 0.25);
+      const seatMat = new THREE.MeshStandardMaterial({ color: 0xd4a373 });
+      const seat = new THREE.Mesh(seatGeo, seatMat);
+      seat.position.y = 0.12;
+      boatGroup.add(seat);
+
+      boatGroup.position.set(7.5, 0.05, 5.5);
+      scene.add(boatGroup);
+      coastalProps.push({ obj: boatGroup, basePos: boatGroup.position.clone(), speed: 1.8, rotSpeed: 1.2 });
+
+      // Mooring Buoy
+      const buoyGeo = new THREE.SphereGeometry(0.24, 12, 12);
+      const buoyMat = new THREE.MeshStandardMaterial({ color: 0xf2542d, roughness: 0.3 });
+      const buoy = new THREE.Mesh(buoyGeo, buoyMat);
+      buoy.position.set(-6.5, 0.08, 6.2);
+      scene.add(buoy);
+      coastalProps.push({ obj: buoy, basePos: buoy.position.clone(), speed: 2.2, rotSpeed: 1.5 });
+    }
+    createCoastalProps();
+
+    const seagulls = [];
+    function createFlock(count = 7) {
+      const birdMat = new THREE.MeshLambertMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+      for (let i = 0; i < count; i++) {
+        const birdGroup = new THREE.Group();
+        const bodyGeo = new THREE.ConeGeometry(0.08, 0.35, 4);
+        bodyGeo.rotateX(Math.PI / 2);
+        const body = new THREE.Mesh(bodyGeo, birdMat);
+        birdGroup.add(body);
+
+        const wingGeo = new THREE.BufferGeometry();
+        const verts = new Float32Array([0, 0, 0, 0.45, 0.06, -0.15, 0, 0, -0.25]);
+        wingGeo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+        wingGeo.computeVertexNormals();
+
+        const leftWing = new THREE.Mesh(wingGeo, birdMat);
+        const rightWing = new THREE.Mesh(wingGeo, birdMat);
+        rightWing.scale.set(-1, 1, 1);
+        birdGroup.add(leftWing, rightWing);
+
+        scene.add(birdGroup);
+        seagulls.push({
+          group: birdGroup,
+          leftWing,
+          rightWing,
+          angle: Math.random() * Math.PI * 2,
+          radius: 12 + Math.random() * 12,
+          height: 8 + Math.random() * 6,
+          speed: 0.012 + Math.random() * 0.008,
+          wingPhase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+    createFlock(8);
+
+    // --- Shared Architectural Materials ---
     const sharedMaterials = {
-      // Solid Land Quay: Heavy weathered masonry stone
-      stoneQuayTop: new THREE.MeshStandardMaterial({
-        color: 0xd6d0c4, // Warm sandstone paving
-        roughness: 0.82,
-        metalness: 0.04
-      }),
-      stoneQuayWall: new THREE.MeshStandardMaterial({
-        color: 0x828488, // Ashlar masonry sea-wall
-        roughness: 0.92,
-        metalness: 0.06
-      }),
-      // Sea-water algae mark band (wet line)
-      wetTideBand: new THREE.MeshStandardMaterial({
-        color: 0x364a3d,
-        roughness: 0.98
-      }),
-      // Crisp Sea-Foam contour fringe
-      seaFoamFringe: new THREE.MeshBasicMaterial({
-        color: 0xf5fdff,
-        transparent: true,
-        opacity: 0.78,
-        depthWrite: false
-      }),
-      // Iron mooring bollard
-      ironBollard: new THREE.MeshStandardMaterial({
-        color: 0x222428,
-        roughness: 0.4,
-        metalness: 0.7
-      }),
-      // Enclosed Garden Grass Turf
-      gardenTurf: new THREE.MeshStandardMaterial({
-        color: 0x4cae57,
-        roughness: 0.72
-      }),
-      // Courtyard flagstone path
-      gardenPaving: new THREE.MeshStandardMaterial({
-        color: 0xbfb8a8,
-        roughness: 0.88
-      }),
-      // Timber Stilts
-      woodStilt: new THREE.MeshStandardMaterial({
-        color: 0x5a3d24,
-        roughness: 0.85
-      }),
-      // Doors & Shutters
-      woodDoor: new THREE.MeshStandardMaterial({
-        color: 0x543720,
-        roughness: 0.75
-      }),
-      windowFrame: new THREE.MeshStandardMaterial({
-        color: 0xffffff,
-        roughness: 0.45
-      }),
-      warmWindowGlass: new THREE.MeshStandardMaterial({
-        color: 0xffe299,
-        emissive: 0xffba42,
-        emissiveIntensity: 0.35,
-        roughness: 0.2
-      }),
-      lanternGlass: new THREE.MeshStandardMaterial({
-        color: 0xffd978,
-        emissive: 0xffaa2b,
-        emissiveIntensity: 0.45,
-        roughness: 0.2
-      }),
-      plantBush: new THREE.MeshStandardMaterial({
-        color: 0x3b8a45,
-        roughness: 0.8
-      }),
-      flowerBloom: new THREE.MeshStandardMaterial({
-        color: 0xe63946,
-        roughness: 0.5
-      }),
-      terraceRail: new THREE.MeshStandardMaterial({
-        color: 0xffffff,
-        roughness: 0.45
-      }),
-      brickChimney: new THREE.MeshStandardMaterial({
-        color: 0xb54c37,
-        roughness: 0.75
-      })
+      stoneQuayTop: new THREE.MeshStandardMaterial({ color: 0xd6d0c4, roughness: 0.82, metalness: 0.04 }),
+      stoneQuayWall: new THREE.MeshStandardMaterial({ color: 0x828488, roughness: 0.92, metalness: 0.06 }),
+      wetTideBand: new THREE.MeshStandardMaterial({ color: 0x364a3d, roughness: 0.98 }),
+      seaFoamFringe: new THREE.MeshBasicMaterial({ color: 0xf5fdff, transparent: true, opacity: 0.78, depthWrite: false }),
+      ironBollard: new THREE.MeshStandardMaterial({ color: 0x222428, roughness: 0.4, metalness: 0.7 }),
+      gardenTurf: new THREE.MeshStandardMaterial({ color: 0x4cae57, roughness: 0.72 }),
+      gardenPaving: new THREE.MeshStandardMaterial({ color: 0xbfb8a8, roughness: 0.88 }),
+      woodStilt: new THREE.MeshStandardMaterial({ color: 0x5a3d24, roughness: 0.85 }),
+      woodPlank: new THREE.MeshStandardMaterial({ color: 0x82542a, roughness: 0.7 }),
+      woodDoor: new THREE.MeshStandardMaterial({ color: 0x543720, roughness: 0.75 }),
+      windowFrame: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.45 }),
+      warmWindowGlass: new THREE.MeshStandardMaterial({ color: 0xffe299, emissive: 0xffba42, emissiveIntensity: 0.35, roughness: 0.2 }),
+      lanternGlass: new THREE.MeshStandardMaterial({ color: 0xffd978, emissive: 0xffaa2b, emissiveIntensity: 0.45, roughness: 0.2 }),
+      plantBush: new THREE.MeshStandardMaterial({ color: 0x3b8a45, roughness: 0.8 }),
+      flowerBloom: new THREE.MeshStandardMaterial({ color: 0xe63946, roughness: 0.5 }),
+      terraceRail: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.45 }),
+      brickChimney: new THREE.MeshStandardMaterial({ color: 0xb54c37, roughness: 0.75 }),
+      flagRope: new THREE.MeshBasicMaterial({ color: 0x3e2717 }),
+      beaconBeam: new THREE.MeshBasicMaterial({ color: 0xffea9f, transparent: true, opacity: 0.38, side: THREE.DoubleSide }),
+      sailCloth: new THREE.MeshStandardMaterial({ color: 0xfdfaf1, roughness: 0.8, side: THREE.DoubleSide })
     };
 
     const wallMaterials = PALETTE.map(p => new THREE.MeshStandardMaterial({
@@ -606,6 +644,14 @@
       roughness: 0.45,
       metalness: 0.05
     }));
+
+    const bannerColors = [0xef4444, 0x3b82f6, 0xeab308, 0x10b981, 0xec4899, 0xf97316];
+    const bannerMats = bannerColors.map(c => new THREE.MeshLambertMaterial({ color: c, side: THREE.DoubleSide }));
+
+    const animatedWindmills = [];
+    const rotatingLighthouses = [];
+    const environmentalOverlays = new THREE.Group();
+    scene.add(environmentalOverlays);
 
     function applyAtmosphere(index) {
       const tod = TIME_OF_DAY[index];
@@ -625,121 +671,8 @@
       sharedMaterials.warmWindowGlass.emissiveIntensity = tod.nightMode ? 0.95 : 0.35;
       sharedMaterials.lanternGlass.emissiveIntensity = tod.nightMode ? 1.0 : 0.45;
       sharedMaterials.warmWindowGlass.emissive.setHex(tod.nightMode ? 0xffbb44 : 0xffdd88);
+      sharedMaterials.beaconBeam.opacity = tod.nightMode ? 0.65 : 0.25;
     }
-
-    // --- Particle System (Chimney Smoke & Splashes) ---
-    const particles = [];
-    const particleGeo = new THREE.SphereGeometry(0.14, 8, 8);
-    const smokeMat = new THREE.MeshBasicMaterial({ color: 0xf0f3f5, transparent: true, opacity: 0.65 });
-    const splashMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.88 });
-
-    function spawnPuff(x, y, z, isWater = false) {
-      const count = isWater ? 10 : 6;
-      for (let i = 0; i < count; i++) {
-        const mesh = new THREE.Mesh(particleGeo, isWater ? splashMat : smokeMat);
-        mesh.position.set(
-          x + (Math.random() - 0.5) * 0.4,
-          y + (Math.random() - 0.5) * 0.2,
-          z + (Math.random() - 0.5) * 0.4
-        );
-        const scale = 0.6 + Math.random() * 0.8;
-        mesh.scale.set(scale, scale, scale);
-
-        scene.add(mesh);
-        particles.push({
-          mesh,
-          vx: (Math.random() - 0.5) * 0.04,
-          vy: 0.035 + Math.random() * 0.05,
-          vz: (Math.random() - 0.5) * 0.04,
-          life: 1.0,
-          decay: 0.035 + Math.random() * 0.03
-        });
-      }
-    }
-
-    // --- Floating Coastal Props (Tethered Boats & Mooring Buoys) ---
-    const coastalProps = [];
-    function createCoastalProps() {
-      // Little wooden fishing rowboat
-      const boatGroup = new THREE.Group();
-      const hullGeo = new THREE.BoxGeometry(0.85, 0.38, 1.7);
-      const hullMat = new THREE.MeshStandardMaterial({ color: 0xd95438, roughness: 0.65 });
-      const hull = new THREE.Mesh(hullGeo, hullMat);
-      hull.position.y = 0.12;
-      boatGroup.add(hull);
-
-      const deckGeo = new THREE.BoxGeometry(0.7, 0.08, 1.45);
-      const deckMat = new THREE.MeshStandardMaterial({ color: 0xede4d1, roughness: 0.75 });
-      const deck = new THREE.Mesh(deckGeo, deckMat);
-      deck.position.y = 0.3;
-      boatGroup.add(deck);
-
-      const seatGeo = new THREE.BoxGeometry(0.66, 0.1, 0.25);
-      const seat = new THREE.Mesh(seatGeo, sharedMaterials.woodDoor);
-      seat.position.set(0, 0.38, 0);
-      boatGroup.add(seat);
-
-      boatGroup.position.set(6.5, 0, 5.5);
-      boatGroup.castShadow = true;
-      scene.add(boatGroup);
-      coastalProps.push({ obj: boatGroup, basePos: boatGroup.position.clone(), speed: 1.8, rotSpeed: 1.1 });
-
-      // Mooring Buoy
-      const buoyGroup = new THREE.Group();
-      const buoyGeo = new THREE.SphereGeometry(0.34, 12, 12);
-      const buoyMat = new THREE.MeshStandardMaterial({ color: 0xf54a31, roughness: 0.3 });
-      const buoy = new THREE.Mesh(buoyGeo, buoyMat);
-      buoy.position.y = 0.18;
-      buoyGroup.add(buoy);
-      buoyGroup.position.set(-6.5, 0, 6.5);
-      scene.add(buoyGroup);
-      coastalProps.push({ obj: buoyGroup, basePos: buoyGroup.position.clone(), speed: 2.4, rotSpeed: 0.8 });
-    }
-    createCoastalProps();
-
-    // --- Flocking Seagulls ---
-    const seagulls = [];
-    function createFlock(count = 8) {
-      const birdGeo = new THREE.ConeGeometry(0.12, 0.45, 4);
-      birdGeo.rotateX(Math.PI / 2);
-      const wingGeo = new THREE.PlaneGeometry(0.48, 0.16);
-
-      const birdMat = new THREE.MeshLambertMaterial({ color: 0xfafafa });
-      const wingMat = new THREE.MeshLambertMaterial({ color: 0x484b50, side: THREE.DoubleSide });
-
-      for (let i = 0; i < count; i++) {
-        const bird = new THREE.Group();
-        const body = new THREE.Mesh(birdGeo, birdMat);
-        bird.add(body);
-
-        const leftWing = new THREE.Mesh(wingGeo, wingMat);
-        leftWing.position.set(-0.24, 0.04, 0);
-        bird.add(leftWing);
-
-        const rightWing = new THREE.Mesh(wingGeo, wingMat);
-        rightWing.position.set(0.24, 0.04, 0);
-        bird.add(rightWing);
-
-        bird.position.set(
-          (Math.random() - 0.5) * 22,
-          7.5 + Math.random() * 6,
-          (Math.random() - 0.5) * 22
-        );
-
-        scene.add(bird);
-        seagulls.push({
-          group: bird,
-          leftWing,
-          rightWing,
-          angle: Math.random() * Math.PI * 2,
-          radius: 8 + Math.random() * 9,
-          speed: 0.016 + Math.random() * 0.014,
-          height: bird.position.y,
-          wingPhase: Math.random() * Math.PI * 2
-        });
-      }
-    }
-    createFlock(8);
 
     /* ==========================================================================
        PROCEDURAL ARCHITECTURE & LAND SYSTEM
@@ -749,27 +682,19 @@
     const HEIGHT_STEP = 1.0;
     const MAX_HEIGHT = 16;
 
-    // Voxel Model Store: "x,y,z" => { x, y, z, colorIndex }
     const voxelMap = new Map();
-    // Visual Group Store: "x,y,z" => THREE.Group
     const visualMap = new Map();
-    // Courtyard Garden Decoration Group Store
     const courtyardDecos = new Map();
-    // Active Chimneys for smoke emission
     const activeChimneys = [];
 
     let colliderList = [seaClickPlane];
     const colliderToCoord = new Map();
 
-    // History
     const historyUndo = [];
     const historyRedo = [];
 
     const keyOf = (x, y, z) => `${x},${y},${z}`;
 
-    /* --------------------------------------------------------------------------
-       Build Procedural Cell Visual
-       -------------------------------------------------------------------------- */
     function buildCellVisual(x, y, z, cellData) {
       const group = new THREE.Group();
       group.position.set(x * GRID_SIZE, y * HEIGHT_STEP + HEIGHT_STEP / 2, z * GRID_SIZE);
@@ -790,34 +715,30 @@
       const coordHash = Math.sin(x * 12.9898 + y * 78.233 + z * 37.719) * 43758.5453;
       const seedVal = coordHash - Math.floor(coordHash);
 
-      // --- 1. SOLID LAND & SEA-WALL QUAYS (CLEAR SEA VS LAND DISTINCTION) ---
+      // 1. SOLID LAND & SEA-WALL QUAYS
       if (isWaterLevel) {
-        // A) Thick Cobblestone Paved Quay Foundation Platform rising above sea
         const quayPlatformGeo = new THREE.BoxGeometry(GRID_SIZE * 0.99, 0.4, GRID_SIZE * 0.99);
         const quayPlatform = new THREE.Mesh(quayPlatformGeo, sharedMaterials.stoneQuayTop);
         quayPlatform.position.y = -HEIGHT_STEP * 0.3;
         quayPlatform.receiveShadow = true;
         group.add(quayPlatform);
 
-        // B) Ashlar Sea-Wall Retaining Wall reaching down into the sea
         const seaWallGeo = new THREE.BoxGeometry(GRID_SIZE * 0.98, 0.45, GRID_SIZE * 0.98);
         const seaWall = new THREE.Mesh(seaWallGeo, sharedMaterials.stoneQuayWall);
         seaWall.position.y = -HEIGHT_STEP * 0.45;
         seaWall.receiveShadow = true;
         group.add(seaWall);
 
-        // C) Wet Tide Mark / Dark Algae Band at the water line
         const tideGeo = new THREE.BoxGeometry(GRID_SIZE * 1.01, 0.14, GRID_SIZE * 1.01);
         const tideMesh = new THREE.Mesh(tideGeo, sharedMaterials.wetTideBand);
         tideMesh.position.y = -HEIGHT_STEP * 0.48;
         group.add(tideMesh);
 
-        // D) Dynamic White Sea-Foam contour fringe where stone touches open sea
         const perimeterOpenings = [
-          { open: !hasN, nx: 0, nz: -0.56, sx: GRID_SIZE * 1.15, sz: 0.22, rot: 0 },
-          { open: !hasS, nx: 0, nz: 0.56, sx: GRID_SIZE * 1.15, sz: 0.22, rot: 0 },
-          { open: !hasE, nx: 0.56, nz: 0, sx: 0.22, sz: GRID_SIZE * 1.15, rot: 0 },
-          { open: !hasW, nx: -0.56, nz: 0, sx: 0.22, sz: GRID_SIZE * 1.15, rot: 0 }
+          { open: !hasN, nx: 0, nz: -0.56, sx: GRID_SIZE * 1.15, sz: 0.22 },
+          { open: !hasS, nx: 0, nz: 0.56, sx: GRID_SIZE * 1.15, sz: 0.22 },
+          { open: !hasE, nx: 0.56, nz: 0, sx: 0.22, sz: GRID_SIZE * 1.15 },
+          { open: !hasW, nx: -0.56, nz: 0, sx: 0.22, sz: GRID_SIZE * 1.15 }
         ];
 
         perimeterOpenings.forEach(p => {
@@ -828,7 +749,6 @@
             foamStrip.position.set(p.nx, -HEIGHT_STEP * 0.49, p.nz);
             group.add(foamStrip);
 
-            // Add Cast Iron Mooring Bollard on stone dock edge
             if (seedVal > 0.45) {
               const bollardGroup = new THREE.Group();
               const bGeo = new THREE.CylinderGeometry(0.045, 0.055, 0.14, 8);
@@ -844,9 +764,8 @@
         });
       }
 
-      // --- 2. ELEVATED BLOCKS OVER WATER: WOODEN STILTS & ARCHWAYS ---
+      // 2. ELEVATED BLOCKS OVER WATER: WOODEN STILTS & ARCHWAYS
       if (isElevatedArch) {
-        // Timber Stilts extending straight into water
         const stiltCount = Math.min(y, 8);
         for (let s = 1; s <= stiltCount; s++) {
           if (!voxelMap.has(keyOf(x, y - s, z))) {
@@ -860,7 +779,6 @@
           }
         }
 
-        // Masonry Bridge Arch span
         const hasNSBridge = (hasN && hasS);
         const hasEWBridge = (hasE && hasW);
 
@@ -884,7 +802,6 @@
         }
         group.add(arch);
 
-        // Hanging glowing warm lantern
         const lanternGroup = new THREE.Group();
         lanternGroup.position.set(0, -0.26, 0);
         const cordGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.22);
@@ -897,7 +814,7 @@
         group.add(lanternGroup);
       }
 
-      // --- 3. MAIN FACADE BODY ---
+      // 3. MAIN FACADE BODY
       const wallH = isWaterLevel ? HEIGHT_STEP * 0.78 : HEIGHT_STEP * 0.98;
       const wallY = isWaterLevel ? 0.11 : 0;
       const bodyGeo = new THREE.BoxGeometry(GRID_SIZE * 0.96, wallH, GRID_SIZE * 0.96);
@@ -907,7 +824,7 @@
       body.receiveShadow = true;
       group.add(body);
 
-      // --- 4. FACADE DETAILS: WINDOWS, SHUTTERS & ENTRANCE DOORS ---
+      // 4. FACADE DETAILS: WINDOWS, SHUTTERS & ENTRANCE DOORS
       const sides = [
         { open: !hasN, rot: 0, nx: 0, nz: -0.49 },
         { open: !hasS, rot: Math.PI, nx: 0, nz: 0.49 },
@@ -918,7 +835,6 @@
       sides.forEach((side, i) => {
         if (!side.open) return;
 
-        // Ground Floor Entrance Door on open dock side
         if (isWaterLevel && i === 1 && !hasS) {
           const doorUnit = new THREE.Group();
           doorUnit.position.set(side.nx, wallY - 0.1, side.nz);
@@ -940,7 +856,6 @@
           return;
         }
 
-        // Multi-pane sash windows with shutters & flower boxes
         if ((seedVal * 7 + i) % 2.4 > 0.75) {
           const winUnit = new THREE.Group();
           winUnit.position.set(side.nx, wallY + 0.03, side.nz);
@@ -955,7 +870,6 @@
           frame.add(glass);
           winUnit.add(frame);
 
-          // Shutters
           if (seedVal > 0.35) {
             const shutterGeo = new THREE.BoxGeometry(0.08, wH, 0.04);
             const leftShutter = new THREE.Mesh(shutterGeo, sharedMaterials.windowFrame);
@@ -967,7 +881,6 @@
             winUnit.add(leftShutter, rightShutter);
           }
 
-          // Flower box under window
           if (seedVal > 0.4) {
             const boxGeo = new THREE.BoxGeometry(0.32, 0.09, 0.12);
             const fBox = new THREE.Mesh(boxGeo, sharedMaterials.woodDoor);
@@ -986,12 +899,80 @@
         }
       });
 
-      // --- 5. ROOFTOPS: GABLED SLOPES, BALUSTRADES & CHIMNEYS ---
+      // 5. ROOFTOPS: GABLED SLOPES, BALUSTRADES, LIGHTHOUSES & WINDMILLS
       if (!hasAbove) {
         const countHorizontal = (hasN ? 1 : 0) + (hasS ? 1 : 0) + (hasE ? 1 : 0) + (hasW ? 1 : 0);
         const roofBaseY = wallY + wallH / 2;
 
-        if (countHorizontal >= 2 && seedVal > 0.6) {
+        if (y >= 4 && countHorizontal === 0) {
+          // Lighthouse
+          const lhBaseGeo = new THREE.CylinderGeometry(0.38, 0.46, 0.32, 12);
+          const lhBase = new THREE.Mesh(lhBaseGeo, sharedMaterials.stoneQuayWall);
+          lhBase.position.y = roofBaseY + 0.16;
+          group.add(lhBase);
+
+          const lhGlassGeo = new THREE.CylinderGeometry(0.32, 0.32, 0.35, 12);
+          const lhGlass = new THREE.Mesh(lhGlassGeo, sharedMaterials.lanternGlass);
+          lhGlass.position.y = roofBaseY + 0.48;
+          group.add(lhGlass);
+
+          const lhRoofGeo = new THREE.ConeGeometry(0.42, 0.28, 12);
+          const lhRoof = new THREE.Mesh(lhRoofGeo, sharedMaterials.stoneQuayWall);
+          lhRoof.position.y = roofBaseY + 0.76;
+          group.add(lhRoof);
+
+          const beamGroup = new THREE.Group();
+          beamGroup.position.set(0, roofBaseY + 0.48, 0);
+
+          const coneBeamGeo = new THREE.ConeGeometry(1.6, 6.5, 16, 1, true);
+          coneBeamGeo.rotateX(Math.PI / 2);
+          coneBeamGeo.translate(0, 0, 3.25);
+          const beamMesh = new THREE.Mesh(coneBeamGeo, sharedMaterials.beaconBeam);
+          beamGroup.add(beamMesh);
+
+          const backBeam = beamMesh.clone();
+          backBeam.rotation.y = Math.PI;
+          beamGroup.add(backBeam);
+
+          group.add(beamGroup);
+          rotatingLighthouses.push(beamGroup);
+
+        } else if (y >= 2 && countHorizontal <= 1 && seedVal > 0.66) {
+          // Windmill
+          const wmCupolaGeo = new THREE.CylinderGeometry(0.24, 0.36, 0.42, 8);
+          const wmCupola = new THREE.Mesh(wmCupolaGeo, sharedMaterials.stoneQuayWall);
+          wmCupola.position.y = roofBaseY + 0.21;
+          group.add(wmCupola);
+
+          const wmCapGeo = new THREE.ConeGeometry(0.32, 0.25, 8);
+          const wmCap = new THREE.Mesh(wmCapGeo, sharedMaterials.stoneQuayTop);
+          wmCap.position.y = roofBaseY + 0.52;
+          group.add(wmCap);
+
+          const rotorGroup = new THREE.Group();
+          rotorGroup.position.set(0, roofBaseY + 0.38, 0.28);
+
+          const axleGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.16, 6);
+          axleGeo.rotateX(Math.PI / 2);
+          const axle = new THREE.Mesh(axleGeo, sharedMaterials.woodDoor);
+          rotorGroup.add(axle);
+
+          for (let b = 0; b < 4; b++) {
+            const sparGeo = new THREE.BoxGeometry(0.04, 1.25, 0.03);
+            const spar = new THREE.Mesh(sparGeo, sharedMaterials.woodPlank);
+            spar.rotation.z = (b * Math.PI) / 2;
+            rotorGroup.add(spar);
+
+            const sailGeo = new THREE.PlaneGeometry(0.24, 0.46);
+            const sail = new THREE.Mesh(sailGeo, sharedMaterials.sailCloth);
+            sail.position.set(0.12, 0.34, 0.02);
+            spar.add(sail);
+          }
+
+          group.add(rotorGroup);
+          animatedWindmills.push(rotorGroup);
+
+        } else if (countHorizontal >= 2 && seedVal > 0.55) {
           // Rooftop Terrace with Balustrade Railings
           const floorGeo = new THREE.BoxGeometry(GRID_SIZE * 0.94, 0.06, GRID_SIZE * 0.94);
           const floor = new THREE.Mesh(floorGeo, sharedMaterials.stoneQuayTop);
@@ -1016,8 +997,7 @@
             }
           });
 
-          // Potted Terrace Shrub
-          if (seedVal > 0.72) {
+          if (seedVal > 0.75) {
             const potGeo = new THREE.CylinderGeometry(0.12, 0.09, 0.15, 8);
             const pot = new THREE.Mesh(potGeo, sharedMaterials.stoneQuayWall);
             pot.position.set(0.15, roofBaseY + 0.12, -0.15);
@@ -1027,7 +1007,7 @@
             group.add(pot, shrub);
           }
         } else {
-          // Pitched Terracotta Roof
+          // Pitched Roof
           const roofH = 0.58;
           let roofMesh;
 
@@ -1052,13 +1032,11 @@
           roofMesh.receiveShadow = true;
           group.add(roofMesh);
 
-          // Eaves Trim
           const trimGeo = new THREE.BoxGeometry(GRID_SIZE * 0.98, 0.08, GRID_SIZE * 0.98);
           const trim = new THREE.Mesh(trimGeo, sharedMaterials.windowFrame);
           trim.position.y = roofBaseY + 0.02;
           group.add(trim);
 
-          // Smoking Brick Chimney
           if (seedVal > 0.45) {
             const chimGeo = new THREE.BoxGeometry(0.16, 0.44, 0.16);
             const chimney = new THREE.Mesh(chimGeo, sharedMaterials.brickChimney);
@@ -1094,9 +1072,160 @@
       return group;
     }
 
-    /* --------------------------------------------------------------------------
-       Courtyard / Greenery Evaluator
-       -------------------------------------------------------------------------- */
+    function evaluateGlobalOverlays() {
+      while (environmentalOverlays.children.length > 0) {
+        const obj = environmentalOverlays.children[0];
+        environmentalOverlays.remove(obj);
+        if (obj.geometry) obj.geometry.dispose();
+      }
+
+      const processedBridges = new Set();
+      const processedBunting = new Set();
+
+      voxelMap.forEach((cell, key) => {
+        const { x, y, z } = cell;
+
+        // 1. SKYWALK WOODEN BRIDGES
+        const bridgeDirections = [
+          { dx: 2, dz: 0, mx: 1, mz: 0, rot: 0 },
+          { dx: 0, dz: 2, mx: 0, mz: 1, rot: Math.PI / 2 }
+        ];
+
+        bridgeDirections.forEach(({ dx, dz, mx, mz, rot }) => {
+          const farKey = keyOf(x + dx, y, z + dz);
+          const midKey = keyOf(x + mx, y, z + mz);
+
+          if (voxelMap.has(farKey) && !voxelMap.has(midKey) && y >= 1) {
+            const bId = [key, farKey].sort().join('--');
+            if (!processedBridges.has(bId)) {
+              processedBridges.add(bId);
+
+              const bridgeGroup = new THREE.Group();
+              bridgeGroup.position.set((x + mx) * GRID_SIZE, y * HEIGHT_STEP + 0.08, (z + mz) * GRID_SIZE);
+              bridgeGroup.rotation.y = rot;
+
+              const deckGeo = new THREE.BoxGeometry(GRID_SIZE * 1.15, 0.09, 0.58);
+              const deck = new THREE.Mesh(deckGeo, sharedMaterials.woodPlank);
+              deck.castShadow = true;
+              bridgeGroup.add(deck);
+
+              [-0.26, 0.26].forEach(rz => {
+                const railGeo = new THREE.BoxGeometry(GRID_SIZE * 1.15, 0.05, 0.04);
+                const rail = new THREE.Mesh(railGeo, sharedMaterials.woodDoor);
+                rail.position.set(0, 0.26, rz);
+                bridgeGroup.add(rail);
+
+                [-0.45, 0, 0.45].forEach(rx => {
+                  const pGeo = new THREE.BoxGeometry(0.04, 0.26, 0.04);
+                  const p = new THREE.Mesh(pGeo, sharedMaterials.woodDoor);
+                  p.position.set(rx, 0.13, rz);
+                  bridgeGroup.add(p);
+                });
+              });
+
+              [-0.38, 0.38].forEach(sx => {
+                const braceGeo = new THREE.CylinderGeometry(0.035, 0.035, 0.48);
+                const brace = new THREE.Mesh(braceGeo, sharedMaterials.woodStilt);
+                brace.position.set(sx, -0.16, 0);
+                brace.rotation.z = (sx > 0 ? -0.55 : 0.55);
+                bridgeGroup.add(brace);
+              });
+
+              environmentalOverlays.add(bridgeGroup);
+            }
+          }
+        });
+
+        // 2. TIMBER STAIRWAYS
+        const stairDirs = [
+          { dx: 1, dz: 0, rot: -Math.PI / 2 },
+          { dx: -1, dz: 0, rot: Math.PI / 2 },
+          { dx: 0, dz: 1, rot: Math.PI },
+          { dx: 0, dz: -1, rot: 0 }
+        ];
+
+        stairDirs.forEach(({ dx, dz, rot }) => {
+          const neighborStep = keyOf(x + dx, y - 1, z + dz);
+          const blockInFront = keyOf(x + dx, y, z + dz);
+          const aboveSelf = keyOf(x, y + 1, z);
+
+          if (voxelMap.has(neighborStep) && !voxelMap.has(blockInFront) && !voxelMap.has(aboveSelf)) {
+            const stairGroup = new THREE.Group();
+            stairGroup.position.set(
+              (x + dx * 0.5) * GRID_SIZE,
+              (y - 0.5) * HEIGHT_STEP,
+              (z + dz * 0.5) * GRID_SIZE
+            );
+            stairGroup.rotation.y = rot;
+
+            for (let s = 0; s < 4; s++) {
+              const stepGeo = new THREE.BoxGeometry(0.38, 0.06, 0.18);
+              const step = new THREE.Mesh(stepGeo, sharedMaterials.woodPlank);
+              step.position.set(0, -0.35 + s * 0.22, -0.28 + s * 0.18);
+              stairGroup.add(step);
+            }
+
+            [-0.2, 0.2].forEach(sx => {
+              const strGeo = new THREE.BoxGeometry(0.04, 0.12, 0.95);
+              const str = new THREE.Mesh(strGeo, sharedMaterials.woodDoor);
+              str.position.set(sx, 0, 0);
+              str.rotation.x = -0.78;
+              stairGroup.add(str);
+            });
+
+            environmentalOverlays.add(stairGroup);
+          }
+        });
+
+        // 3. COLORFUL BUNTING FLAGS
+        const buntingDirs = [
+          { dx: 2, dz: 0 },
+          { dx: 0, dz: 2 },
+          { dx: 2, dz: 1 },
+          { dx: 1, dz: 2 }
+        ];
+
+        buntingDirs.forEach(({ dx, dz }) => {
+          const farKey = keyOf(x + dx, y, z + dz);
+          if (voxelMap.has(farKey) && y >= 1) {
+            const fId = [key, farKey].sort().join('~~');
+            if (!processedBunting.has(fId)) {
+              processedBunting.add(fId);
+
+              const startPos = new THREE.Vector3(x * GRID_SIZE, y * HEIGHT_STEP + 0.65, z * GRID_SIZE);
+              const endPos = new THREE.Vector3((x + dx) * GRID_SIZE, y * HEIGHT_STEP + 0.65, (z + dz) * GRID_SIZE);
+              const mid = startPos.clone().lerp(endPos, 0.5);
+              mid.y -= 0.32;
+
+              const curve = new THREE.QuadraticBezierCurve3(startPos, mid, endPos);
+              const points = curve.getPoints(14);
+              const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+              const rope = new THREE.Line(lineGeo, sharedMaterials.flagRope);
+              environmentalOverlays.add(rope);
+
+              for (let f = 2; f < points.length - 2; f += 2) {
+                const pt = points[f];
+                const flagGeo = new THREE.BufferGeometry();
+                const v = new Float32Array([
+                  -0.1, 0, 0,
+                   0.1, 0, 0,
+                   0, -0.22, 0
+                ]);
+                flagGeo.setAttribute('position', new THREE.BufferAttribute(v, 3));
+                flagGeo.computeVertexNormals();
+
+                const colIdx = Math.floor(Math.abs(Math.sin(x * 12 + f)) * bannerMats.length);
+                const flagMesh = new THREE.Mesh(flagGeo, bannerMats[colIdx]);
+                flagMesh.position.copy(pt);
+                flagMesh.rotation.y = Math.atan2(dz, dx) + Math.PI / 2;
+                environmentalOverlays.add(flagMesh);
+              }
+            }
+          }
+        });
+      });
+    }
+
     function evaluateCourtyards() {
       courtyardDecos.forEach(mesh => scene.remove(mesh));
       courtyardDecos.clear();
@@ -1114,7 +1243,6 @@
       for (let gx = minX - 1; gx <= maxX + 1; gx++) {
         for (let gz = minZ - 1; gz <= maxZ + 1; gz++) {
           const groundKey = keyOf(gx, 0, gz);
-          // When water spot is completely enclosed by solid land quay blocks
           if (!voxelMap.has(groundKey)) {
             const surrounded =
               voxelMap.has(keyOf(gx, 0, gz - 1)) &&
@@ -1126,19 +1254,16 @@
               const gardenGroup = new THREE.Group();
               gardenGroup.position.set(gx * GRID_SIZE, 0.08, gz * GRID_SIZE);
 
-              // Solid green grass lawn replacement for water
               const lawnGeo = new THREE.BoxGeometry(GRID_SIZE * 0.99, 0.22, GRID_SIZE * 0.99);
               const lawn = new THREE.Mesh(lawnGeo, sharedMaterials.gardenTurf);
               lawn.receiveShadow = true;
               gardenGroup.add(lawn);
 
-              // Stone garden flagstone center
               const pathGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.24, 8);
               const path = new THREE.Mesh(pathGeo, sharedMaterials.gardenPaving);
               path.position.y = 0.02;
               gardenGroup.add(path);
 
-              // Miniature Park Tree or Bench
               const r = Math.sin(gx * 45.1 + gz * 91.7);
               if (r > 0) {
                 const trunkGeo = new THREE.CylinderGeometry(0.06, 0.08, 0.65, 6);
@@ -1164,7 +1289,6 @@
       }
     }
 
-    // Refresh Single Voxel
     function refreshCell(x, y, z) {
       const key = keyOf(x, y, z);
       const cellData = voxelMap.get(key);
@@ -1190,9 +1314,10 @@
       }
     }
 
-    // Refresh cell + immediate 3D neighbors
     function refreshCellAndNeighbors(x, y, z) {
       activeChimneys.length = 0;
+      animatedWindmills.length = 0;
+      rotatingLighthouses.length = 0;
 
       const deltas = [
         [0,0,0], [0,1,0], [0,-1,0],
@@ -1206,13 +1331,12 @@
         }
       });
 
-      // Recalculate chimneys
       voxelMap.forEach(v => {
         const k = keyOf(v.x, v.y + 1, v.z);
         if (!voxelMap.has(k)) {
           const hash = Math.sin(v.x * 12.9898 + v.y * 78.233 + v.z * 37.719) * 43758.5453;
           const seed = hash - Math.floor(hash);
-          if (seed > 0.45) {
+          if (seed > 0.45 && v.y < 4) {
             const cx = (seed > 0.7 ? 0.24 : -0.24);
             const cz = (seed > 0.55 ? 0.24 : -0.24);
             activeChimneys.push({
@@ -1225,11 +1349,9 @@
       });
 
       evaluateCourtyards();
+      evaluateGlobalOverlays();
     }
 
-    /* --------------------------------------------------------------------------
-       Add / Remove Block Operations
-       -------------------------------------------------------------------------- */
     function setBlock(x, y, z, colorIdx, pushHistory = true) {
       if (y < 0 || y >= MAX_HEIGHT) return;
       const key = keyOf(x, y, z);
@@ -1243,7 +1365,6 @@
         historyRedo.length = 0;
       }
 
-      // Audio feedback & Ripples
       if (y === 0) {
         Sound.playWaterSplash();
         spawnWaterRipple(x * GRID_SIZE, z * GRID_SIZE);
@@ -1253,7 +1374,6 @@
 
       spawnPuff(x * GRID_SIZE, y * HEIGHT_STEP + 0.5, z * GRID_SIZE, y === 0);
 
-      // Bounce pop animation
       const vis = visualMap.get(key);
       if (vis) {
         vis.scale.set(0.68, 0.68, 0.68);
@@ -1327,7 +1447,6 @@
       showToast('Island Cleared');
     }
 
-    // Procedural Island Generator
     function generateRandomIsland() {
       clearIsland();
       const radius = 3;
@@ -1350,7 +1469,6 @@
         }
       }
 
-      // Pier jutting into the sea
       const bridgeZ = 0;
       for (let bx = radius + 1; bx <= radius + 3; bx++) {
         setBlock(bx, 1, bridgeZ, 4, false);
@@ -1359,6 +1477,89 @@
 
       showToast('New Coastal Island Generated!');
     }
+
+    // --- Save & Load System ---
+    const STORAGE_KEY = 'townscaper_mini_save';
+
+    function exportTownData() {
+      const exportList = [];
+      voxelMap.forEach(val => {
+        exportList.push({ x: val.x, y: val.y, z: val.z, c: val.colorIndex });
+      });
+      return {
+        version: '1.2',
+        timestamp: Date.now(),
+        timeOfDay: currentTodIndex,
+        blocks: exportList
+      };
+    }
+
+    function importTownData(data) {
+      if (!data || !Array.isArray(data.blocks)) {
+        showToast('Invalid Town Data file!');
+        return;
+      }
+      clearIsland();
+      data.blocks.forEach(b => {
+        setBlock(b.x, b.y, b.z, b.c, false);
+      });
+      if (typeof data.timeOfDay === 'number') {
+        currentTodIndex = data.timeOfDay % TIME_OF_DAY.length;
+        applyAtmosphere(currentTodIndex);
+      }
+      showToast(`Loaded ${data.blocks.length} Town Blocks!`);
+    }
+
+    function saveToLocalStorage() {
+      const data = exportTownData();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      showToast('Town Saved to Browser!');
+      Sound.playPop();
+    }
+
+    function loadFromLocalStorage() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      try {
+        const data = JSON.parse(raw);
+        importTownData(data);
+        return true;
+      } catch(e) {
+        return false;
+      }
+    }
+
+    function downloadJSONFile() {
+      const data = exportTownData();
+      const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+      const a = document.createElement('a');
+      a.setAttribute('href', str);
+      a.setAttribute('download', `townscaper-island-${Date.now()}.json`);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      showToast('Town File Exported!');
+      Sound.playPop();
+    }
+
+    document.getElementById('btnSaveLocal').addEventListener('click', saveToLocalStorage);
+    document.getElementById('btnExport').addEventListener('click', downloadJSONFile);
+
+    document.getElementById('fileImport').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          importTownData(parsed);
+        } catch(err) {
+          showToast('Failed to parse town file.');
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    });
 
     /* ==========================================================================
        USER INPUT & RAYCASTING
@@ -1396,7 +1597,6 @@
         const isRemove = (e.button === 2 || e.shiftKey);
 
         if (!isRemove && e.button === 0) {
-          // Left Click: Build
           if (hit.object === seaClickPlane) {
             const gx = Math.round(hit.point.x / GRID_SIZE);
             const gz = Math.round(hit.point.z / GRID_SIZE);
@@ -1414,7 +1614,6 @@
             }
           }
         } else if (isRemove) {
-          // Right Click / Shift-Click: Remove
           if (hit.object !== seaClickPlane) {
             const coord = colliderToCoord.get(hit.object);
             if (coord) {
@@ -1427,7 +1626,6 @@
 
     window.addEventListener('contextmenu', (e) => e.preventDefault());
 
-    // Shortcuts
     window.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
         e.preventDefault();
@@ -1446,7 +1644,6 @@
       }
     });
 
-    // Toast
     const toast = document.getElementById('toast');
     function showToast(msg) {
       toast.textContent = msg;
@@ -1458,7 +1655,6 @@
       }, 1600);
     }
 
-    // UI Buttons Binding
     function cycleTimeOfDay() {
       currentTodIndex = (currentTodIndex + 1) % TIME_OF_DAY.length;
       applyAtmosphere(currentTodIndex);
@@ -1517,23 +1713,19 @@
        ========================================================================== */
     function buildStarterTown() {
       const initial = [
-        // Solid stone quay foundations on water
         { x: 0, y: 0, z: 0, c: 0 },
         { x: 1, y: 0, z: 0, c: 0 },
         { x: 0, y: 0, z: 1, c: 1 },
         { x: 1, y: 0, z: 1, c: 1 },
 
-        // Mid-level warm building facades
         { x: 0, y: 1, z: 0, c: 0 },
         { x: 1, y: 1, z: 0, c: 2 },
         { x: 0, y: 1, z: 1, c: 1 },
         { x: 1, y: 1, z: 1, c: 2 },
 
-        // Lookout tower
         { x: 0, y: 2, z: 0, c: 4 },
         { x: 0, y: 3, z: 0, c: 4 },
 
-        // Coastal arch bridge over open sea
         { x: 2, y: 0, z: 0, c: 5 },
         { x: 3, y: 1, z: 0, c: 5 },
         { x: 4, y: 0, z: 0, c: 5 },
@@ -1601,7 +1793,17 @@
         bird.rightWing.rotation.z = -flap;
       });
 
-      // 5. Chimney Smoke Generation
+      // 5. Dynamic Windmill Blades Rotation
+      animatedWindmills.forEach(rotor => {
+        rotor.rotation.z += 0.024;
+      });
+
+      // 6. Revolving Lighthouse Beacon Beam
+      rotatingLighthouses.forEach(lh => {
+        lh.rotation.y += 0.018;
+      });
+
+      // 7. Chimney Smoke Generation
       smokeTimer += delta;
       if (smokeTimer > 0.18 && activeChimneys.length > 0) {
         smokeTimer = 0;
@@ -1612,7 +1814,7 @@
         });
       }
 
-      // 6. Particle Lifecycle
+      // 8. Particle Lifecycle
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.mesh.position.x += p.vx;
@@ -1637,7 +1839,10 @@
     // Startup
     window.onload = function () {
       applyAtmosphere(0);
-      buildStarterTown();
+      const restored = loadFromLocalStorage();
+      if (!restored) {
+        buildStarterTown();
+      }
       animate();
     };
   </script>
